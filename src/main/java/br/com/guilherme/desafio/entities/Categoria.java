@@ -46,6 +46,10 @@ public class Categoria implements Serializable {
         this.descricao = descricao;
     }
 
+    public List<Atividade> getAtividades() {
+        return atividades;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
