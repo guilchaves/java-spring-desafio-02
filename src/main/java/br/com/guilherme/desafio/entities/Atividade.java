@@ -4,30 +4,33 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_categoria")
-public class Categoria implements Serializable {
+@Table(name = "tb_atividade")
+public class Atividade implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String nome;
     private String descricao;
+    private Double preco;
 
-    @OneToMany(mappedBy = "categoria")
-    private List<Atividade> atividades = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "atividade_id")
+    private Categoria categoria;
 
-    public Categoria() {
+    public Atividade() {
     }
 
-    public Categoria(Integer id, String descricao) {
+    public Atividade(Integer id, String nome, String descricao, Double preco) {
         this.id = id;
+        this.nome = nome;
         this.descricao = descricao;
+        this.preco = preco;
     }
 
     public Integer getId() {
@@ -38,6 +41,14 @@ public class Categoria implements Serializable {
         this.id = id;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getDescricao() {
         return descricao;
     }
@@ -46,14 +57,22 @@ public class Categoria implements Serializable {
         this.descricao = descricao;
     }
 
+    public Double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Categoria categoria = (Categoria) o;
+        Atividade atividade = (Atividade) o;
 
-        return Objects.equals(id, categoria.id);
+        return Objects.equals(id, atividade.id);
     }
 
     @Override
