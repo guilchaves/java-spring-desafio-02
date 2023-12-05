@@ -27,7 +27,7 @@ public class Atividade implements Serializable {
     private Set<Bloco> blocos = new HashSet<>();
 
     @ManyToMany(mappedBy = "atividades")
-    private List<Participante> participantes = new ArrayList<>();
+    private Set<Participante> participantes = new HashSet<>();
 
     public Atividade() {
     }
@@ -83,7 +83,7 @@ public class Atividade implements Serializable {
         return blocos;
     }
 
-    public List<Participante> getParticipantes() {
+    public Set<Participante> getParticipantes() {
         return participantes;
     }
 
