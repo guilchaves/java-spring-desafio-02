@@ -3,12 +3,15 @@ package br.com.guilherme.desafio.services;
 import br.com.guilherme.desafio.dto.ParticipanteDTO;
 import br.com.guilherme.desafio.entities.Participante;
 import br.com.guilherme.desafio.repositories.ParticipanteRepository;
+import br.com.guilherme.desafio.services.exceptions.DatabaseException;
 import br.com.guilherme.desafio.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -50,7 +53,19 @@ public class ParticipanteService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Resource not found");
         }
+    }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Integer id){
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException("Resource not found");
+        }
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Data Integrity Violation: Unable to delete resource with ID " + id +
+                    " due to relations with other entities");
+        }
     }
 
     private void copyDtoToEntity(ParticipanteDTO dto, Participante entity) {
