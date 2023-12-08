@@ -4,6 +4,7 @@ import br.com.guilherme.desafio.dto.ParticipanteDTO;
 import br.com.guilherme.desafio.entities.Participante;
 import br.com.guilherme.desafio.repositories.ParticipanteRepository;
 import br.com.guilherme.desafio.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,19 @@ public class ParticipanteService {
         copyDtoToEntity(dto, entity);
         entity = repository.save(entity);
         return new ParticipanteDTO(entity);
+    }
+
+    @Transactional
+    public ParticipanteDTO update(Integer id, ParticipanteDTO dto) {
+        try {
+            Participante entity = repository.getReferenceById(id);
+            copyDtoToEntity(dto, entity);
+            entity = repository.save(entity);
+            return new ParticipanteDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+
     }
 
     private void copyDtoToEntity(ParticipanteDTO dto, Participante entity) {

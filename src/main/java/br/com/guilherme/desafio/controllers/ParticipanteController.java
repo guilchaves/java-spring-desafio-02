@@ -38,8 +38,13 @@ public class ParticipanteController {
                 .path("/{id}")
                 .buildAndExpand(dto.getId())
                 .toUri();
-
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ParticipanteDTO> update(@PathVariable Integer id, @RequestBody ParticipanteDTO dto){
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 }
 
