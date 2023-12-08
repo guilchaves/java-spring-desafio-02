@@ -2,6 +2,7 @@ package br.com.guilherme.desafio.controllers;
 
 import br.com.guilherme.desafio.dto.ParticipanteDTO;
 import br.com.guilherme.desafio.services.ParticipanteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class ParticipanteController {
     }
 
     @PostMapping
-    public ResponseEntity<ParticipanteDTO> insert(@RequestBody ParticipanteDTO dto) {
+    public ResponseEntity<ParticipanteDTO> insert(@Valid @RequestBody ParticipanteDTO dto) {
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -42,7 +43,7 @@ public class ParticipanteController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ParticipanteDTO> update(@PathVariable Integer id, @RequestBody ParticipanteDTO dto){
+    public ResponseEntity<ParticipanteDTO> update(@PathVariable Integer id, @Valid @RequestBody ParticipanteDTO dto){
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
