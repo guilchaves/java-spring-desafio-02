@@ -87,6 +87,8 @@ public class Atividade implements Serializable {
         return participantes;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
